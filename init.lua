@@ -1,8 +1,15 @@
 -- Set <space> as the leader key
 -- See `:help mapleader`
 --  NOTE: Must happen before plugins are loaded (otherwise wrong leader will be used)
+--
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
+
+-- TODO: Find a better place
+vim.keymap.set('n', '<leader>db', '<cmd> DapToggleBreakpoint <CR>', { desc = '[D]ap Toggle [B]reakpoint' })
+vim.keymap.set('n', '<leader>dpr', function()
+  require('dap-python').test_method()
+end, { desc = '[D]ap [P]ython [R]un' })
 
 -- Set to true if you have a Nerd Font installed
 vim.g.have_nerd_font = false
@@ -137,16 +144,62 @@ require('lazy').setup({
   -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
   'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
   'nvim-neotest/nvim-nio',
-  -- NOTE: Plugins can also be added by using a table,
-  -- with the first argument being the link and the following
-  -- keys can be used to configure plugin behavior/loading/etc.
-  --
-  -- Use `opts = {}` to force a plugin to be loaded.
-  --
-  --  This is equivalent to:
-  --    require('Comment').setup({})
+  {
+    'mfussenegger/nvim-dap',
+    configurations = {
 
-  -- "gc" to comment visual regions/lines
+      python = {
+
+        type = 'python',
+        request = 'launch',
+        name = 'Launch file',
+      },
+    },
+  },
+  {
+    'mfussenegger/nvim-dap-python',
+    ft = 'python',
+    dependencies = {
+      'rcarriga/nvim-dap-ui',
+      'mfussenegger/nvim-dap',
+    },
+    config = function()
+      require('dap-python').setup()
+    end,
+  },
+  {
+    'rcarriga/nvim-dap-ui',
+    dependencies = {
+      'mfussenegger/nvim-dap',
+      'nvim-neotest/nvim-nio',
+    },
+    config = function()
+      local dap = require 'dap'
+      local dapui = require 'dapui'
+      dapui.setup()
+
+      dap.listeners.after.event_initialized['dapui_config'] = function()
+        dapui.open()
+      end
+
+      dap.listeners.before.event_terminated['dapui_config'] = function()
+        dapui.close()
+      end
+
+      dap.listeners.before.event_exited['dapui_config'] = function()
+        dapui.close()
+      end
+    end,
+  },
+  {
+    'folke/neodev.nvim',
+    opts = {},
+    config = function()
+      require('neodev').setup {
+        library = { plugins = { 'nvim-dap-ui' }, types = true },
+      }
+    end,
+  },
   { 'numToStr/Comment.nvim', opts = {} },
 
   -- Here is a more advanced example where we pass configuration
