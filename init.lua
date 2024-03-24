@@ -443,7 +443,12 @@ require('lazy').setup({
       --  - capabilities (table): Override fields in capabilities. Can be used to disable certain LSP features.
       --  - settings (table): Override the default settings passed when initializing the server.
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
-      local servers = {
+      local tools = {
+        ruff = {},
+        mypy = {},
+        stylua = {},
+      }
+      servers = {
         -- clangd = {},
         gopls = {},
         pyright = {},
@@ -493,14 +498,11 @@ require('lazy').setup({
       --  You can press `g?` for help in this menu
       require('mason').setup()
 
-      -- You can add other tools here that you want Mason to install
-      -- for you, so that they are available from within Neovim.
-      local ensure_installed = vim.tbl_keys(servers or {})
-      vim.list_extend(ensure_installed, {
-        'stylua', -- Used to format lua code
-      })
-      require('mason-tool-installer').setup { ensure_installed = ensure_installed }
+      local ensure_installed = {}
+      vim.list_extend(ensure_installed, vim.tbl_keys(servers))
+      vim.list_extend(ensure_installed, vim.tbl_keys(tools))
 
+      require('mason-tool-installer').setup { ensure_installed = ensure_installed }
       require('mason-lspconfig').setup {
         handlers = {
           function(server_name)
@@ -527,7 +529,7 @@ require('lazy').setup({
       formatters_by_ft = {
         lua = { 'stylua' },
         -- Conform can also run multiple formatters sequentially
-        python = { 'isort', 'black' },
+        python = { 'isort', 'black', 'ruff', 'mypy' },
         go = {
           'goimports',
           'gofmt',
