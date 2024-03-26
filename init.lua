@@ -4,6 +4,18 @@
 --
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
+vim.g.firenvim_config = {
+  globalSettings = { alt = 'all' },
+  localSettings = {
+    ['.*'] = {
+      cmdline = 'neovim',
+      content = 'text',
+      priority = 0,
+      selector = 'textarea',
+      takeover = 'never',
+    },
+  },
+}
 
 -- TODO: Find a better place
 vim.keymap.set('n', '<leader>db', '<cmd> DapToggleBreakpoint <CR>', { desc = '[D]ap Toggle [B]reakpoint' })
@@ -141,7 +153,13 @@ vim.opt.rtp:prepend(lazypath)
 --
 -- NOTE: Here is where you install your plugins.
 require('lazy').setup({
-  -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
+  {
+    'glacambre/firenvim',
+    lazy = not vim.g.started_by_firenvim,
+    build = function()
+      vim.fn['firenvim#install'](0)
+    end,
+  },
   'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
   'nvim-neotest/nvim-nio',
   {
