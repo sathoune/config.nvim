@@ -4,18 +4,8 @@
 --
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
-vim.g.firenvim_config = {
-  globalSettings = { alt = 'all' },
-  localSettings = {
-    ['.*'] = {
-      cmdline = 'neovim',
-      content = 'text',
-      priority = 0,
-      selector = 'textarea',
-      takeover = 'never',
-    },
-  },
-}
+
+require('plugins.firenvim').global_overrides()
 
 -- TODO: Find a better place
 vim.keymap.set('n', '<leader>db', '<cmd> DapToggleBreakpoint <CR>', { desc = '[D]ap Toggle [B]reakpoint' })
@@ -87,6 +77,7 @@ vim.opt.scrolloff = 10
 
 -- Set highlight on search, but clear on pressing <Esc> in normal mode
 vim.opt.hlsearch = true
+
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 
 -- Diagnostic keymaps
@@ -132,6 +123,12 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   end,
 })
 
+local function config_overrides()
+  require('plugins.firenvim').config_overrides()
+end
+
+config_overrides()
+
 -- [[ Install `lazy.nvim` plugin manager ]]
 --    See `:help lazy.nvim.txt` or https://github.com/folke/lazy.nvim for more info
 local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
@@ -153,13 +150,8 @@ vim.opt.rtp:prepend(lazypath)
 --
 -- NOTE: Here is where you install your plugins.
 require('lazy').setup({
-  {
-    'glacambre/firenvim',
-    lazy = not vim.g.started_by_firenvim,
-    build = function()
-      vim.fn['firenvim#install'](0)
-    end,
-  },
+  require('plugins.firenvim').lazy_config,
+
   'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
   'nvim-neotest/nvim-nio',
   {
