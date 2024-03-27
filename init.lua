@@ -6,13 +6,7 @@ vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
 require('plugins.firenvim').global_overrides()
-
--- TODO: Find a better place
-vim.keymap.set('n', '<leader>db', '<cmd> DapToggleBreakpoint <CR>', { desc = '[D]ap Toggle [B]reakpoint' })
-vim.keymap.set('n', '<leader>dpr', function()
-  require('dap-python').test_method()
-end, { desc = '[D]ap [P]ython [R]un' })
-
+require('plugins.dap.main').mappings()
 -- Set to true if you have a Nerd Font installed
 vim.g.have_nerd_font = false
 
@@ -151,56 +145,11 @@ vim.opt.rtp:prepend(lazypath)
 -- NOTE: Here is where you install your plugins.
 require('lazy').setup({
   require('plugins.firenvim').lazy_config,
+  require('plugins.dap.main').lazy_config,
 
   'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
   'nvim-neotest/nvim-nio',
-  {
-    'mfussenegger/nvim-dap',
-    configurations = {
 
-      python = {
-
-        type = 'python',
-        request = 'launch',
-        name = 'Launch file',
-      },
-    },
-  },
-  {
-    'mfussenegger/nvim-dap-python',
-    ft = 'python',
-    dependencies = {
-      'rcarriga/nvim-dap-ui',
-      'mfussenegger/nvim-dap',
-    },
-    config = function()
-      require('dap-python').setup()
-    end,
-  },
-  {
-    'rcarriga/nvim-dap-ui',
-    dependencies = {
-      'mfussenegger/nvim-dap',
-      'nvim-neotest/nvim-nio',
-    },
-    config = function()
-      local dap = require 'dap'
-      local dapui = require 'dapui'
-      dapui.setup()
-
-      dap.listeners.after.event_initialized['dapui_config'] = function()
-        dapui.open()
-      end
-
-      dap.listeners.before.event_terminated['dapui_config'] = function()
-        dapui.close()
-      end
-
-      dap.listeners.before.event_exited['dapui_config'] = function()
-        dapui.close()
-      end
-    end,
-  },
   {
     'folke/neodev.nvim',
     opts = {},
