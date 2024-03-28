@@ -4,3 +4,8 @@
 
 # Set default tab length to 4 spaces(?)
 # default to spaces
+
+# Move LPS config out of init
+# Move Telescope config out of init
+# Install Harpoon
+#
