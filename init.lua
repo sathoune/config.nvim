@@ -150,7 +150,6 @@ require('lazy').setup({
   require('plugins.lsp').lazy_config,
 
   'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
-  'nvim-neotest/nvim-nio',
 
   {
     'folke/neodev.nvim',
