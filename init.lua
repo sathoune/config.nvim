@@ -144,6 +144,7 @@ vim.opt.rtp:prepend(lazypath)
 --
 -- NOTE: Here is where you install your plugins.
 require('lazy').setup({
+  require('plugins.colorscheme').lazy_config,
   require('plugins.firenvim').lazy_config,
   require('plugins.dap.main').lazy_config,
   require('plugins.telescope').lazy_config,
@@ -325,18 +326,6 @@ require('lazy').setup({
           { name = 'path' },
         },
       }
-    end,
-  },
-
-  {
-    -- Colorscheme
-    'rose-pine/neovim',
-    name = 'rose-pine',
-    lazy = false,
-    priority = 1000,
-    config = function()
-      vim.cmd.colorscheme 'rose-pine-main'
-      vim.cmd.hi 'Comment gui=none'
     end,
   },
 
