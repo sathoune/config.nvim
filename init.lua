@@ -144,13 +144,7 @@ vim.opt.rtp:prepend(lazypath)
 --
 -- NOTE: Here is where you install your plugins.
 require('lazy').setup({
-  require('plugins.colorscheme').lazy_config,
-  require('plugins.firenvim').lazy_config,
-  require('plugins.dap.main').lazy_config,
-  require('plugins.telescope').lazy_config,
-  require('plugins.lsp').lazy_config,
-  require('plugins.completion').lazy_config,
-
+  require 'plugins.init',
   'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
 
   {
@@ -319,7 +313,6 @@ require('lazy').setup({
   --
   --  Uncomment the following line and add your plugins to `lua/custom/plugins/*.lua` to get going.
   --    For additional information, see `:help lazy.nvim-lazy.nvim-structuring-your-plugins`
-  -- { import = 'custom.plugins' },
 }, {
   ui = {
     -- If you have a Nerd Font, set icons to an empty table which will use the
