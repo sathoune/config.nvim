@@ -5,7 +5,6 @@
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
-require('plugins.firenvim').global_overrides()
 require('plugins.dap.main').mappings()
 -- Set to true if you have a Nerd Font installed
 vim.g.have_nerd_font = false
@@ -116,12 +115,6 @@ vim.api.nvim_create_autocmd('TextYankPost', {
     vim.highlight.on_yank()
   end,
 })
-
-local function config_overrides()
-  require('plugins.firenvim').config_overrides()
-end
-
-config_overrides()
 
 -- [[ Install `lazy.nvim` plugin manager ]]
 --    See `:help lazy.nvim.txt` or https://github.com/folke/lazy.nvim for more info
