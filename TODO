@@ -1,11 +1,7 @@
-# Modify firenvim config so it has
-	- smaller font
-	- minimal UI
-
 # Set default tab length to 4 spaces(?)
 # default to spaces
 
-# Move LPS config out of init
-# Move Telescope config out of init
 # Install Harpoon
-#
+
+# Check if one can exclusively use `keys` property from lazy to setup mappings.
+# Explore why python debugger quits immediately after tests fail.
