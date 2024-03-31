@@ -1,7 +1,0 @@
-# Set default tab length to 4 spaces(?)
-# default to spaces
-
-# Install Harpoon
-
-# Check if one can exclusively use `keys` property from lazy to setup mappings.
-# Explore why python debugger quits immediately after tests fail.
