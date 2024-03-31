@@ -1,6 +1,5 @@
 local Module = {
   lazy_config = {
-    require 'kickstart.plugins.debug',
     require 'kickstart.plugins.indent_line',
     'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
     {
