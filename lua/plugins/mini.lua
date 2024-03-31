@@ -16,6 +16,15 @@ local Module = {
         -- - sd'   - [S]urround [D]elete [']quotes
         -- - sr)'  - [S]urround [R]eplace [)] [']
         require('mini.surround').setup()
+        -- `lua: MiniDiff.toggle_overlay()`
+        -- Run to see git changes to the current buffer.
+        require('mini.diff').setup()
+        -- Multiline `f` & `t`.
+        require('mini.jump').setup()
+        -- Autamatically write pairs for brackets or quotes.
+        require('mini.pairs').setup()
+        -- Maps `gS` to split or joins arguments of a function/list/object.
+        require('mini.splitjoin').setup()
 
         -- Simple and easy statusline.
         --  You could remove this setup call if you don't like it,
