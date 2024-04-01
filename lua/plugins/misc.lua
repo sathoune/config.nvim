@@ -1,5 +1,10 @@
 local Module = {
-    require 'kickstart.plugins.indent_line',
+    { -- Add indentation guides even on blank lines
+        'lukas-reineke/indent-blankline.nvim',
+        -- See `:help ibl`
+        main = 'ibl',
+        opts = {},
+    },
     'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
     {
         'folke/neodev.nvim',
