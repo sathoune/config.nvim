@@ -2,7 +2,6 @@
 # default to spaces
 
 # Install 
-  - Harpoon
   - nvim-lint
   - vale - markdown linter
   - nvim-tree
@@ -10,8 +9,11 @@
 
 
 # Research
-  - Check if one can exclusively use `keys` property from lazy to setup mappings.
   - why python debugger quits immediately after tests fail.
   - for a plugin "better%" to change jumping to external/internal brackets.
   - if pinning dependencies makes sense.
+  - how to delete a mark from Harpoon
 
+# Refactor
+  - Use `init` in plugin manager to setup the colorscheme
+  - Check if one can exclusively use `keys` property from lazy to setup mappings.
