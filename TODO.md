@@ -31,6 +31,7 @@
     - move to a new file
     - update imports
   - Rainbow variables
+  - checkout: https://github.com/hrsh7th/nvim-cmp
 
 # Refactor
   - Use `init` in plugin manager to setup the colorscheme
