@@ -1,11 +1,4 @@
-# Set default tab length to 4 spaces(?)
-
-# default to spaces
-
-# Install
-
-- nvim-tree
-- folke/trouble
+# Set default tab length to 4 spaces(?) default to spaces
 
 # Research
 
