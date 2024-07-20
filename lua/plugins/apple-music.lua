@@ -2,50 +2,42 @@ local Module = {
     'p5quared/apple-music.nvim',
     dependencies = { 'nvim-telescope/telescope.nvim' },
     config = true,
-    keys = {
-        {
-            '<leader>amp',
-            function()
-                require('apple-music').toggle_play()
-            end,
-            desc = 'Toggle [P]layback',
-        },
-        {
-            '<leader>ams',
-            function()
-                require('apple-music').toggle_shuffle()
-            end,
-            desc = 'Toggle [S]huffle',
-        },
-        {
-            '<leader>fp',
-            function()
-                require('apple-music').select_playlist_telescope()
-            end,
-            desc = '[F]ind [P]laylists',
-        },
-        {
-            '<leader>fa',
-            function()
-                require('apple-music').select_album_telescope()
-            end,
-            desc = '[F]ind [A]lbum',
-        },
-        {
-            '<leader>fs',
-            function()
-                require('apple-music').select_track_telescope()
-            end,
-            desc = '[F]ind [S]ong',
-        },
-        {
-            '<leader>amx',
-            function()
-                require('apple-music').cleanup_all()
-            end,
-            desc = 'Cleanup Temp Playlists',
-        },
-    },
+    keys = function()
+        local plugin = require 'apple-music'
+        local my_keys = {
+            {
+                '<leader>amp',
+                plugin.toggle_play,
+                desc = 'Toggle [P]layback',
+            },
+            {
+                '<leader>ams',
+                plugin.toggle_shuffle,
+                desc = 'Toggle [S]huffle',
+            },
+            {
+                '<leader>fp',
+                plugin.select_playlist_telescope,
+                desc = '[F]ind [P]laylists',
+            },
+            {
+                '<leader>fa',
+                plugin.select_album_telescope,
+                desc = '[F]ind [A]lbum',
+            },
+            {
+                '<leader>fs',
+                plugin.select_track_telescope,
+                desc = '[F]ind [S]ong',
+            },
+            {
+                '<leader>amx',
+                plugin.cleanup_all,
+                desc = 'Cleanup Temp Playlists',
+            },
+        }
+        return my_keys
+    end,
 }
 
 return Module
