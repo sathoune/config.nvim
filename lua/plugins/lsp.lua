@@ -155,8 +155,9 @@ local Module = {
             ruff = {},
             mypy = {},
             stylua = {},
+            prettier = true,
         }
-        servers = {
+        local servers = {
             -- clangd = {},
             gopls = {},
             basedpyright = {},
@@ -168,6 +169,7 @@ local Module = {
             --
             -- But for many setups, the LSP (`tsserver`) will work just fine
             tsserver = {},
+            -- dprint = {},
             --
 
             lua_ls = {
