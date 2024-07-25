@@ -6,8 +6,12 @@ local function jump_down()
     local lines_in_the_buffer = vim.fn.line '$'
     local distance = lines_in_the_buffer - current_line
 
+    local first_line_in_viewport = vim.fn.line 'w0'
+    local last_line_in_viewport = vim.fn.line 'w$'
+    local visible_lines = last_line_in_viewport - first_line_in_viewport
+
     local cursor_at_the_last_line = distance == 0
-    if cursor_at_the_last_line then
+    if cursor_at_the_last_line and visible_lines > lines_in_viewport / 2 then
         -- "virtual" move
         vim.api.nvim_input(third_of_the_screen .. '<C-e>')
     else
