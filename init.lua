@@ -5,6 +5,7 @@
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
+require 'custom.batch-movement'()
 -- Set to true if you have a Nerd Font installed
 vim.g.have_nerd_font = true
 
@@ -59,9 +60,6 @@ vim.opt.inccommand = 'split'
 
 -- Show which line your cursor is on
 vim.opt.cursorline = true
-
--- Minimal number of screen lines to keep above and below the cursor.
-vim.opt.scrolloff = 20
 
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`

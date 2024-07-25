@@ -1,4 +1,6 @@
-# Set default tab length to 4 spaces(?) default to spaces
+# Set default tab length to 4 spaces(?)
+
+default to spaces
 
 # Research
 
@@ -10,8 +12,7 @@
 - running all tests in a file (or a directory)
 - How to make ([{}]) less annoying when adding a function before a variable: `process()"message"` (treesitter?)
 - UP\DOWN scrolling window offset dynamic
-  - more when window's bigger so eyes are more often in the middle
-  - offset with empty lines when file's too small
+  - Can I have the "virtual" lines on top of the buffer?
 - "better" map of the file. Layout with listed methods/classes, type signatures, etc... ex:
   main.py
   - class CDE
@@ -27,9 +28,9 @@
 - checkout: https://github.com/hrsh7th/nvim-cmp
 - checkout: https://github.com/ast-grep/ast-grep
 - checkout: https://github.com/nvim-lualine/lualine.nvim
+- folke/noice.nvim
 
 # Refactor
 
 - Use `init` in plugin manager to setup the colorscheme
 - Check if one can exclusively use `keys` property from lazy to setup mappings.
-- change keys in the apple-things
