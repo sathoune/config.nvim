@@ -151,13 +151,11 @@ local Module = {
         --  - capabilities (table): Override fields in capabilities. Can be used to disable certain LSP features.
         --  - settings (table): Override the default settings passed when initializing the server.
         --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
-        local tools = {
+        local servers = {
             ruff = {},
             mypy = {},
             stylua = {},
             prettier = true,
-        }
-        local servers = {
             -- clangd = {},
             gopls = {},
             basedpyright = {},
@@ -210,13 +208,12 @@ local Module = {
 
         local ensure_installed = {}
         vim.list_extend(ensure_installed, vim.tbl_keys(servers))
-        vim.list_extend(ensure_installed, vim.tbl_keys(tools))
 
         require('mason-tool-installer').setup { ensure_installed = ensure_installed }
         require('mason-lspconfig').setup {
             handlers = {
                 function(server_name)
-                    local server = ensure_installed[server_name] or {}
+                    local server = servers[server_name] or {}
                     -- This handles overriding only values explicitly passed
                     -- by the server configuration above. Useful when disabling
                     -- certain features of an LSP (for example, turning off formatting for tsserver)
