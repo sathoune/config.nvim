@@ -190,6 +190,23 @@ local Module = {
             --
             -- But for many setups, the LSP (`tsserver`) will work just fine
             tsserver = {},
+            pylsp = {
+                plugins = {
+                    rope_autoimport = {
+                        enabled = true,
+                        completions = {
+                            enabled = true,
+                        },
+                        code_actions = {
+                            enabled = true,
+                        },
+                    },
+                    rope_completion = {
+                        enabled = true,
+                        eager = true,
+                    },
+                },
+            },
             -- dprint = {},
             --
 
