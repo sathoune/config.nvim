@@ -1,5 +1,6 @@
 local Module = {
     'glacambre/firenvim',
+    version = '0.2.16',
     lazy = not vim.g.started_by_firenvim,
     build = function()
         vim.fn['firenvim#install'](0)
