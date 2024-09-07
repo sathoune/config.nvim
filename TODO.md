@@ -11,6 +11,7 @@ default to spaces
 - "mini" debug mode just for test running. (no left panel)
 - running all tests in a file (or a directory)
 - How to make ([{}]) less annoying when adding a function before a variable: `process()"message"` (treesitter?)
+  - Is it a case really?
 - UP\DOWN scrolling window offset dynamic
   - Can I have the "virtual" lines on top of the buffer?
 - "better" map of the file. Layout with listed methods/classes, type signatures, etc... ex:
