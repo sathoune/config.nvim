@@ -21,8 +21,6 @@ local Module = {
         require('mini.diff').setup()
         -- Multiline `f` & `t`.
         require('mini.jump').setup()
-        -- Autamatically write pairs for brackets or quotes.
-        require('mini.pairs').setup()
         -- Maps `gS` to split or joins arguments of a function/list/object.
         require('mini.splitjoin').setup()
 
