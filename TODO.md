@@ -29,7 +29,6 @@ default to spaces
 - checkout: https://github.com/hrsh7th/nvim-cmp
 - checkout: https://github.com/ast-grep/ast-grep
 - checkout: https://github.com/nvim-lualine/lualine.nvim
-- folke/noice.nvim
 
 # Refactor
 
