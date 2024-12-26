@@ -58,7 +58,9 @@ local Module = {
 
         vim.keymap.set('n', '<leader>dq', dapui.close, { desc = '[D]ap [Q]uit' })
         require('dap-go').setup()
-        require('dap-python').setup()
+        local dap_python = require 'dap-python'
+        dap_python.test_runner = 'pytest'
+        dap_python.setup()
     end,
 }
 
