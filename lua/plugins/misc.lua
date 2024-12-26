@@ -8,12 +8,9 @@ local Module = {
     'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
     {
         'folke/neodev.nvim',
-        opts = {},
-        config = function()
-            require('neodev').setup {
-                library = { plugins = { 'nvim-dap-ui' }, types = true },
-            }
-        end,
+        opts = {
+            library = { plugins = { 'nvim-dap-ui' }, types = true },
+        },
     },
     { 'numToStr/Comment.nvim', opts = {} },
     { -- Adds git related signs to the gutter, as well as utilities for managing changes
@@ -34,7 +31,7 @@ local Module = {
         config = function() -- This is the function that runs, AFTER loading
             require('which-key').setup()
 
-            -- Document existing key chains
+            -- These just suggest what might be under the key-chain
             require('which-key').add {
                 { '<leader>c', group = '[C]ode' },
                 { '<leader>c_', hidden = true },
@@ -65,9 +62,6 @@ local Module = {
     {
         'folke/noice.nvim',
         event = 'VeryLazy',
-        opts = {
-            -- add any options here
-        },
         dependencies = {
             -- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
             'MunifTanjim/nui.nvim',
@@ -76,24 +70,22 @@ local Module = {
             --   If not available, we use `mini` as the fallback
             'rcarriga/nvim-notify',
         },
-        config = {
-            require('noice').setup {
-                lsp = {
-                    -- override markdown rendering so that **cmp** and other plugins use **Treesitter**
-                    override = {
-                        ['vim.lsp.util.convert_input_to_markdown_lines'] = true,
-                        ['vim.lsp.util.stylize_markdown'] = true,
-                        ['cmp.entry.get_documentation'] = true, -- requires hrsh7th/nvim-cmp
-                    },
+        opts = {
+            lsp = {
+                -- override markdown rendering so that **cmp** and other plugins use **Treesitter**
+                override = {
+                    ['vim.lsp.util.convert_input_to_markdown_lines'] = true,
+                    ['vim.lsp.util.stylize_markdown'] = true,
+                    ['cmp.entry.get_documentation'] = true, -- requires hrsh7th/nvim-cmp
                 },
-                -- you can enable a preset for easier configuration
-                presets = {
-                    bottom_search = true, -- use a classic bottom cmdline for search
-                    command_palette = true, -- position the cmdline and popupmenu together
-                    long_message_to_split = true, -- long messages will be sent to a split
-                    inc_rename = false, -- enables an input dialog for inc-rename.nvim
-                    lsp_doc_border = false, -- add a border to hover docs and signature help
-                },
+            },
+            -- you can enable a preset for easier configuration
+            presets = {
+                bottom_search = true, -- use a classic bottom cmdline for search
+                command_palette = true, -- position the cmdline and popupmenu together
+                long_message_to_split = true, -- long messages will be sent to a split
+                inc_rename = false, -- enables an input dialog for inc-rename.nvim
+                lsp_doc_border = false, -- add a border to hover docs and signature help
             },
         },
     },
