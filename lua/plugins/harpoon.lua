@@ -9,32 +9,33 @@ local Module = {
         vim.keymap.set('n', '<leader>a', function()
             harpoon:list():add()
         end)
-        vim.keymap.set('n', '<C-a>', function()
+        vim.keymap.set('n', '<leader>na', function()
             harpoon.ui:toggle_quick_menu(harpoon:list())
         end, {
             noremap = true,
+            desc = 'harpoon menu',
         })
 
         -- Quick picks
-        vim.keymap.set('n', '<C-h>', function()
+        vim.keymap.set('n', '<leader>nh', function()
             harpoon:list():select(1)
-        end)
-        vim.keymap.set('n', '<C-t>', function()
+        end, { desc = 'harpoon 1.' })
+        vim.keymap.set('n', '<leader>nt', function()
             harpoon:list():select(2)
-        end)
-        vim.keymap.set('n', '<C-n>', function()
+        end, { desc = 'harpoon 2.' })
+        vim.keymap.set('n', '<leader>nn', function()
             harpoon:list():select(3)
-        end)
-        vim.keymap.set('n', '<C-s>', function()
+        end, { desc = 'harpoon 3.' })
+        vim.keymap.set('n', '<leader>ns', function()
             harpoon:list():select(4)
-        end)
+        end, { desc = 'harpoon 4.' })
 
-        vim.keymap.set('n', '<C-S-P>', function()
-            harpoon:list():prev()
-        end)
-        vim.keymap.set('n', '<C-S-N>', function()
+        vim.keymap.set('n', '<leader>n<C-n>', function()
             harpoon:list():next()
-        end)
+        end, { desc = 'harpoon next' })
+        vim.keymap.set('n', '<leader>n<C-p>', function()
+            harpoon:list():prev()
+        end, { desc = 'harpoon prev' })
     end,
 }
 

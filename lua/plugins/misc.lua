@@ -43,6 +43,8 @@ local Module = {
                 { '<leader>s_', hidden = true },
                 { '<leader>w', group = '[W]orkspace' },
                 { '<leader>w_', hidden = true },
+                { '<leader>n', group = 'Harpoo[n]' },
+                { '<leader>n_', hidden = true },
             }
         end,
     },
