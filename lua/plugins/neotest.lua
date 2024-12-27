@@ -21,7 +21,7 @@ local Module = {
             neotest.run.run,
             { desc = 'run nearest function as a test' }
         )
-        vim.keymap.set('n', '<leader>to', neotest.summary.open, { desc = 'toggle summary' })
+        vim.keymap.set('n', '<leader>tt', neotest.summary.toggle, { desc = 'toggle summary' })
     end,
 }
 
