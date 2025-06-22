@@ -7,7 +7,12 @@ vim.g.maplocalleader = ' '
 -- Set to true if you have a Nerd Font installed
 vim.g.have_nerd_font = true
 
-require 'custom.batch-movement'()
+local batch_movement = 'new'
+if batch_movement == 'new' then
+    require 'custom.batch-movement-2'()
+else
+    require 'custom.batch-movement'()
+end
 require 'custom.options'()
 require 'custom.keymaps'()
 require 'custom.autocommands'()
