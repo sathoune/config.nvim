@@ -6,7 +6,11 @@ local Module = {
     priority = 1000,
     opts = {
         styles = {
+            -- Inherit background colour from terminal
             transparency = true,
+        },
+        palette = {
+            main = {},
         },
     },
     init = function()
