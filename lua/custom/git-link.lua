@@ -1,37 +1,43 @@
-local function get_git_root()
-    local handle = io.popen 'git rev-parse --show-toplevel 2>/dev/null'
+local function exec_command(command)
+    local handle = io.popen(command)
+
     if not handle then
-        return nil
+        local message = 'Result empty of command: ' .. command
+        error(message)
     end
+
     local result = handle:read('*a'):gsub('%s+$', '')
     handle:close()
-    return result ~= '' and result or nil
+    return result
+end
+
+local function get_git_root()
+    local command = 'git rev-parse --show-toplevel 2>/dev/null'
+    local git_root = exec_command(command)
+
+    if git_root == '' then
+        error 'Absolute path empty. Likely not a git repo.'
+    end
+
+    return git_root
 end
 
 local function get_git_remote_url()
-    local handle = io.popen 'git remote get-url origin 2>/dev/null'
-    if not handle then
-        return nil
-    end
-    local url = handle:read('*a'):gsub('%s+$', '')
-    handle:close()
+    local command = 'git remote get-url origin 2>/dev/null'
+    local remote_url = exec_command(command)
 
     -- Convert SSH -> HTTPS if needed
-    if url:match '^git@' then
-        url = url:gsub('git@([^:]+):', 'https://%1/')
+    if remote_url:match '^git@' then
+        remote_url = remote_url:gsub('git@([^:]+):', 'https://%1/')
     end
     -- Remove .git suffix if present
-    url = url:gsub('%.git$', '')
-    return url
+    remote_url = remote_url:gsub('%.git$', '')
+    return remote_url
 end
 
 local function get_git_branch()
-    local handle = io.popen 'git rev-parse --abbrev-ref HEAD 2>/dev/null'
-    if not handle then
-        return nil
-    end
-    local branch = handle:read('*a'):gsub('%s+$', '')
-    handle:close()
+    local command = 'git rev-parse --abbrev-ref HEAD 2>/dev/null'
+    local branch = exec_command(command)
     return branch
 end
 
