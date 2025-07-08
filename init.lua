@@ -7,7 +7,7 @@ vim.g.maplocalleader = ' '
 -- Set to true if you have a Nerd Font installed
 vim.g.have_nerd_font = true
 
-local batch_movement = 'new'
+local batch_movement = 'old'
 if batch_movement == 'new' then
     require 'custom.batch-movement-2'()
 else
