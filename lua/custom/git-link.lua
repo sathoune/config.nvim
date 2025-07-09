@@ -27,11 +27,15 @@ local function get_git_remote_url()
     local remote_url = exec_command(command)
 
     -- Convert SSH -> HTTPS if needed
-    if remote_url:match '^git@' then
-        remote_url = remote_url:gsub('git@([^:]+):', 'https://%1/')
+    local starts_with_git = '^git@'
+    if remote_url:match(starts_with_git) then
+        local find_hostname = 'git@([^:]+):'
+        local paste_match = 'https://%1/'
+        remote_url = remote_url:gsub(find_hostname, paste_match)
     end
-    -- Remove .git suffix if present
-    remote_url = remote_url:gsub('%.git$', '')
+
+    local git_suffix = '%.git$'
+    remote_url = remote_url:gsub(git_suffix, '')
     return remote_url
 end
 
