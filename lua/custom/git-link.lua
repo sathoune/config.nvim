@@ -57,7 +57,7 @@ local function get_relative_file_path()
     return full_path:sub(root_path_length + skip_slash_in_path)
 end
 
-local function generate_git_url()
+local function generate_git_url(range_start, range_end)
     local file = get_relative_file_path()
     local branch = get_git_branch()
     local remote = get_git_remote_url()
@@ -66,15 +66,31 @@ local function generate_git_url()
         return
     end
 
-    local line = vim.fn.line '.'
-    local url = remote .. '/blob/' .. branch .. '/' .. file .. '#' .. line
+    -- If called without a range (normal mode), use current line
+    local start_line = range_start or vim.fn.line '.'
+    local end_line = range_end or start_line
+
+    local line_fragment = '#L' .. start_line
+
+    if start_line ~= end_line then
+        line_fragment = line_fragment .. '-L' .. end_line
+    end
+
+    local url = remote .. '/blob/' .. branch .. '/' .. file .. line_fragment
 
     vim.fn.setreg('+', url) -- copy to system clipboard
     print('Copied URL: ' .. url)
 end
 
+local function pass_selection(func)
+    local function wrapper(opts)
+        func(opts.line1, opts.line2)
+    end
+    return wrapper
+end
+
 local function register()
-    vim.api.nvim_create_user_command('GitLink', generate_git_url, {})
+    vim.api.nvim_create_user_command('GitLink', pass_selection(generate_git_url), { range = true })
 end
 
 return register
