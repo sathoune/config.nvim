@@ -48,10 +48,11 @@ end
 local function get_relative_file_path()
     local full_path = vim.fn.expand '%:p'
     local root = get_git_root()
-    if not root then
-        return nil
-    end
-    return full_path:sub(#root + 2)
+
+    local root_path_length = #root + 1
+    local skip_slash_in_path = 1
+
+    return full_path:sub(root_path_length + skip_slash_in_path)
 end
 
 local function generate_git_url()
@@ -64,7 +65,7 @@ local function generate_git_url()
     end
 
     local line = vim.fn.line '.'
-    local url = string.format('%s/blob/%s/%s#L%d', remote, branch, file, line)
+    local url = remote .. '/blob/' .. branch .. '/' .. file .. '#' .. line
 
     vim.fn.setreg('+', url) -- copy to system clipboard
     print('Copied URL: ' .. url)
