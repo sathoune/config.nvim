@@ -1,8 +1,16 @@
 local function explode_link(url)
-    local user, repo, branch, path, line =
-        url:match 'https://github.com/([^/]+)/([^/]+)/blob/([^/]+)/(.-)#L(%d+)'
+    local base_pattern = 'https://github.com/([^/]+)/([^/]+)/blob/([^/]+)/(.-)#L(%d+)'
+    local range_pattern = base_pattern .. '-L(%d+)'
 
-    if not (user and repo and branch and path and line) then
+    local user, repo, branch, path, line_start, line_end = url:match(range_pattern)
+
+    if not user then
+        -- Fallback to single-line form
+        user, repo, branch, path, line_start = url:match(base_pattern)
+        line_end = line_start
+    end
+
+    if not (user and repo and branch and path and line_start) then
         error('Failed to parse GitHub URL: ' .. url)
     end
 
@@ -10,8 +18,8 @@ local function explode_link(url)
         repo = repo,
         branch = branch,
         file = path,
-        line_start = tonumber(line),
-        line_end = tonumber(line),
+        line_start = tonumber(line_start),
+        line_end = tonumber(line_end),
     }
 end
 
