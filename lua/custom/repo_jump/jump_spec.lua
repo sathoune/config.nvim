@@ -1,30 +1,5 @@
-local function explode_link(url)
-    local base_pattern = 'https://github.com/([^/]+)/([^/]+)/blob/([^/]+)/(.-)#L(%d+)'
-    local range_pattern = base_pattern .. '-L(%d+)'
+local jump = require 'lua.custom.repo_jump.jump'
 
-    local user, repo, branch, path, line_start, line_end = url:match(range_pattern)
-
-    if not user then
-        -- Fallback to single-line form
-        user, repo, branch, path, line_start = url:match(base_pattern)
-        line_end = line_start
-    end
-
-    if not (user and repo and branch and path and line_start) then
-        error('Failed to parse GitHub URL: ' .. url)
-    end
-
-    return {
-        repo = repo,
-        branch = branch,
-        file = path,
-        line_start = tonumber(line_start),
-        line_end = tonumber(line_end),
-    }
-end
-local function dev_directory()
-    return os.getenv 'PROJECTS_DIR'
-end
 describe('Exploding links', function()
     local example_links = {
         base_case = {
@@ -61,7 +36,7 @@ describe('Exploding links', function()
 
     it('Extracts path elements', function()
         for _, case in pairs(example_links) do
-            local results = explode_link(case.url)
+            local results = jump.explode_link(case.url)
             assert.same(case.expected_target, results)
         end
     end)
@@ -69,7 +44,7 @@ describe('Exploding links', function()
     it('Reads env vars', function()
         local expected_path = '~/projects/'
 
-        local read_value = dev_directory()
+        local read_value = jump.dev_directory()
         assert.equal(expected_path, read_value)
     end)
 end)
