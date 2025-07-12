@@ -22,7 +22,9 @@ local function explode_link(url)
         line_end = tonumber(line_end),
     }
 end
-
+local function dev_directory()
+    return os.getenv 'PROJECTS_DIR'
+end
 describe('Exploding links', function()
     local example_links = {
         base_case = {
@@ -62,5 +64,12 @@ describe('Exploding links', function()
             local results = explode_link(case.url)
             assert.same(case.expected_target, results)
         end
+    end)
+
+    it('Reads env vars', function()
+        local expected_path = '~/projects/'
+
+        local read_value = dev_directory()
+        assert.equal(expected_path, read_value)
     end)
 end)
