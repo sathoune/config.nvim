@@ -198,11 +198,25 @@ local Module = {
                 settings = {
                     Lua = {
                         diagnostics = {
-                            globals = { 'vim' },
+                            globals = {
+                                -- vim globals
+                                'vim',
+                                -- Busted globals
+                                'describe',
+                                'it',
+                                'before_each',
+                                'after_each',
+                                'assert',
+                            },
                         },
                         runtime = { version = 'LuaJIT' },
                         completion = {
                             callSnippet = 'Replace',
+                        },
+                        workspace = {
+                            library = {
+                                '/opt/homebrew/share/lua/5.4',
+                            },
                         },
                     },
                 },
