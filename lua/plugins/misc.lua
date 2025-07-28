@@ -32,7 +32,7 @@ local Module = {
             require('which-key').setup()
 
             -- These just suggest what might be under the key-chain
-            require('which-key').add {
+            require('which-key').add({
                 { '<leader>c', group = '[C]ode' },
                 { '<leader>c_', hidden = true },
                 { '<leader>d', group = '[D]ocument' },
@@ -45,7 +45,7 @@ local Module = {
                 { '<leader>w_', hidden = true },
                 { '<leader>n', group = 'Harpoo[n]' },
                 { '<leader>n_', hidden = true },
-            }
+            })
         end,
     },
     { -- Highlight todo, notes, etc in comments

@@ -10,7 +10,7 @@ local Module = {
         'nvim-treesitter/nvim-treesitter',
     },
     build = function()
-        vim.cmd 'TSInstall! pkl'
+        vim.cmd('TSInstall! pkl')
     end,
 }
 

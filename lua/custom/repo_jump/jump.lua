@@ -26,7 +26,10 @@ function M.explode_link(url)
 end
 
 function M.dev_directory()
-    return os.getenv 'PROJECTS_DIR'
+    return os.getenv('PROJECTS_DIR')
 end
 
+function M.build_local_path()
+    return
+end
 return M

@@ -16,7 +16,7 @@ local function get_git_root()
     local git_root = exec_command(command)
 
     if git_root == '' then
-        error 'Absolute path empty. Likely not a git repo.'
+        error('Absolute path empty. Likely not a git repo.')
     end
 
     return git_root
@@ -48,7 +48,7 @@ local function get_git_branch()
 end
 
 local function get_relative_file_path()
-    local full_path = vim.fn.expand '%:p'
+    local full_path = vim.fn.expand('%:p')
     local root = get_git_root()
 
     local root_path_length = #root + 1
@@ -67,7 +67,7 @@ local function generate_git_url(range_start, range_end)
     end
 
     -- If called without a range (normal mode), use current line
-    local start_line = range_start or vim.fn.line '.'
+    local start_line = range_start or vim.fn.line('.')
     local end_line = range_end or start_line
 
     local line_fragment = '#L' .. start_line
@@ -90,7 +90,11 @@ local function pass_selection(func)
 end
 
 local function register()
-    vim.api.nvim_create_user_command('GitLink', pass_selection(generate_git_url), { range = true })
+    vim.api.nvim_create_user_command(
+        'GitLink',
+        pass_selection(generate_git_url),
+        { range = true }
+    )
 end
 
 return register

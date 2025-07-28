@@ -2,12 +2,12 @@ local lines_in_viewport = vim.api.nvim_win_get_height(0) - 1
 local third_of_the_screen = math.ceil(lines_in_viewport / 3)
 
 local function jump_down()
-    local current_line = vim.fn.line '.'
-    local lines_in_the_buffer = vim.fn.line '$'
+    local current_line = vim.fn.line('.')
+    local lines_in_the_buffer = vim.fn.line('$')
     local distance = lines_in_the_buffer - current_line
 
-    local first_line_in_viewport = vim.fn.line 'w0'
-    local last_line_in_viewport = vim.fn.line 'w$'
+    local first_line_in_viewport = vim.fn.line('w0')
+    local last_line_in_viewport = vim.fn.line('w$')
     local visible_lines = last_line_in_viewport - first_line_in_viewport
 
     local cursor_at_the_last_line = distance == 0
@@ -20,8 +20,8 @@ local function jump_down()
 end
 
 local function jump_up()
-    local first_line_in_viewport = vim.fn.line 'w0'
-    local last_line_in_viewport = vim.fn.line 'w$'
+    local first_line_in_viewport = vim.fn.line('w0')
+    local last_line_in_viewport = vim.fn.line('w$')
     local visible_lines = last_line_in_viewport - first_line_in_viewport
 
     local extra_lines = lines_in_viewport - visible_lines

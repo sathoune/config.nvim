@@ -1,4 +1,4 @@
-local jump = require 'lua.custom.repo_jump.jump'
+local jump = require('lua.custom.repo_jump.jump')
 
 describe('Exploding links', function()
     local example_links = {

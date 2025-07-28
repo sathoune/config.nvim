@@ -9,16 +9,16 @@ vim.g.have_nerd_font = true
 
 local batch_movement = 'old'
 if batch_movement == 'new' then
-    require 'custom.batch-movement-2'()
+    require('custom.batch-movement-2')()
 else
-    require 'custom.batch-movement'()
+    require('custom.batch-movement')()
 end
-require 'custom.options'()
-require 'custom.keymaps'()
-require 'custom.autocommands'()
+require('custom.options')()
+require('custom.keymaps')()
+require('custom.autocommands')()
 
-require 'custom._initialize-lazy'()
-require 'custom.git-link'()
+require('custom._initialize-lazy')()
+require('custom.git-link')()
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et

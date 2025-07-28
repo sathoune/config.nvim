@@ -59,12 +59,12 @@ local function remove_top_padding()
 end
 
 local function jump_down()
-    local current_line = vim.fn.line '.'
-    local lines_in_the_buffer = vim.fn.line '$'
+    local current_line = vim.fn.line('.')
+    local lines_in_the_buffer = vim.fn.line('$')
     local distance = lines_in_the_buffer - current_line
 
-    local first_line_in_viewport = vim.fn.line 'w0'
-    local last_line_in_viewport = vim.fn.line 'w$'
+    local first_line_in_viewport = vim.fn.line('w0')
+    local last_line_in_viewport = vim.fn.line('w$')
     local visible_lines = last_line_in_viewport - first_line_in_viewport
 
     local cursor_at_the_last_line = distance == 0
@@ -81,9 +81,9 @@ local function jump_down()
 end
 
 local function jump_up()
-    local current_line = vim.fn.line '.'
-    local first_line_in_viewport = vim.fn.line 'w0'
-    local last_line_in_viewport = vim.fn.line 'w$'
+    local current_line = vim.fn.line('.')
+    local first_line_in_viewport = vim.fn.line('w0')
+    local last_line_in_viewport = vim.fn.line('w$')
     local visible_lines = last_line_in_viewport - first_line_in_viewport
 
     local extra_lines = lines_in_viewport - visible_lines

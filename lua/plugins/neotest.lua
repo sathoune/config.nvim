@@ -8,12 +8,12 @@ local Module = {
         'nvim-neotest/neotest-python',
     },
     config = function()
-        local neotest = require 'neotest'
-        neotest.setup {
+        local neotest = require('neotest')
+        neotest.setup({
             adapters = {
-                require 'neotest-python',
+                require('neotest-python'),
             },
-        }
+        })
 
         vim.keymap.set(
             'n',
@@ -21,7 +21,12 @@ local Module = {
             neotest.run.run,
             { desc = 'run nearest function as a test' }
         )
-        vim.keymap.set('n', '<leader>tt', neotest.summary.toggle, { desc = 'toggle summary' })
+        vim.keymap.set(
+            'n',
+            '<leader>tt',
+            neotest.summary.toggle,
+            { desc = 'toggle summary' }
+        )
     end,
 }
 

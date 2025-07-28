@@ -29,21 +29,26 @@ local Module = {
         },
     },
     config = function()
-        require('mason-nvim-dap').setup {
+        require('mason-nvim-dap').setup({
             automatic_setup = true,
             handlers = {},
             ensure_installed = { 'delve' },
-        }
+        })
 
-        local dap = require 'dap'
-        local dapui = require 'dapui'
+        local dap = require('dap')
+        local dapui = require('dapui')
         vim.keymap.set(
             'n',
             '<leader>db',
             '<cmd> DapToggleBreakpoint <CR>',
             { desc = '[D]ap Toggle [B]reakpoint' }
         )
-        vim.keymap.set('n', '<leader>dn', '<cmd> DapContinue <CR>', { desc = '[D]ap Co[N]tinue' })
+        vim.keymap.set(
+            'n',
+            '<leader>dn',
+            '<cmd> DapContinue <CR>',
+            { desc = '[D]ap Co[N]tinue' }
+        )
         vim.keymap.set(
             'n',
             '<leader>dr',
@@ -58,7 +63,7 @@ local Module = {
 
         vim.keymap.set('n', '<leader>dq', dapui.close, { desc = '[D]ap [Q]uit' })
         require('dap-go').setup()
-        local dap_python = require 'dap-python'
+        local dap_python = require('dap-python')
         dap_python.test_runner = 'pytest'
         dap_python.setup()
     end,

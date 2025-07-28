@@ -1,24 +1,28 @@
 ---@param args { toolnames: string[] }
 local function install_tools(args)
     require('mason').setup()
-    require('mason-tool-installer').setup { ensure_installed = args.toolnames }
+    require('mason-tool-installer').setup({ ensure_installed = args.toolnames })
 end
 
 ---@param args {servers: {[string]: any}, capabilities: any}
 local function configure_tools(args)
-    require('mason-lspconfig').setup {
+    require('mason-lspconfig').setup({
         handlers = {
             function(server_name)
                 local server = args.servers[server_name] or {}
                 -- This handles overriding only values explicitly passed
                 -- by the server configuration above. Useful when disabling
                 -- certain features of an LSP (for example, turning off formatting for tsserver)
-                server.capabilities =
-                    vim.tbl_deep_extend('force', {}, args.capabilities, server.capabilities or {})
+                server.capabilities = vim.tbl_deep_extend(
+                    'force',
+                    {},
+                    args.capabilities,
+                    server.capabilities or {}
+                )
                 require('lspconfig')[server_name].setup(server)
             end,
         },
-    }
+    })
 end
 
 local Module = {
@@ -65,7 +69,10 @@ local Module = {
         --    an lsp (for example, opening `main.rs` is associated with `rust_analyzer`) this
         --    function will be executed to configure the current buffer
         vim.api.nvim_create_autocmd('LspAttach', {
-            group = vim.api.nvim_create_augroup('kickstart-lsp-attach', { clear = true }),
+            group = vim.api.nvim_create_augroup(
+                'kickstart-lsp-attach',
+                { clear = true }
+            ),
             callback = function(event)
                 -- NOTE: Remember that lua is a real programming language, and as such it is possible
                 -- to define small helper and utility functions so you don't have to repeat yourself
@@ -74,16 +81,29 @@ local Module = {
                 -- In this case, we create a function that lets us more easily define mappings specific
                 -- for LSP related items. It sets the mode, buffer and description for us each time.
                 local map = function(keys, func, desc)
-                    vim.keymap.set('n', keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })
+                    vim.keymap.set(
+                        'n',
+                        keys,
+                        func,
+                        { buffer = event.buf, desc = 'LSP: ' .. desc }
+                    )
                 end
 
                 -- Jump to the definition of the word under your cursor.
                 --  This is where a variable was first declared, or where a function is defined, etc.
                 --  To jump back, press <C-T>.
-                map('gd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
+                map(
+                    'gd',
+                    require('telescope.builtin').lsp_definitions,
+                    '[G]oto [D]efinition'
+                )
 
                 -- Find references for the word under your cursor.
-                map('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
+                map(
+                    'gr',
+                    require('telescope.builtin').lsp_references,
+                    '[G]oto [R]eferences'
+                )
 
                 -- Jump to the implementation of the word under your cursor.
                 --  Useful when your language has ways of declaring types without an actual implementation.
@@ -224,8 +244,8 @@ local Module = {
         }
 
         local toolnames = vim.tbl_keys(servers)
-        install_tools { toolnames = toolnames }
-        configure_tools { servers = servers, capabilities = capabilities }
+        install_tools({ toolnames = toolnames })
+        configure_tools({ servers = servers, capabilities = capabilities })
     end,
 }
 

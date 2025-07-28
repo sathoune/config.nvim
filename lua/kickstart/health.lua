@@ -1,11 +1,18 @@
 -- This file helps determine if the system is setup correctly
 
 local check_version = function()
-    local verstr =
-        string.format('%s.%s.%s', vim.version().major, vim.version().minor, vim.version().patch)
+    local verstr = string.format(
+        '%s.%s.%s',
+        vim.version().major,
+        vim.version().minor,
+        vim.version().patch
+    )
     if not vim.version.cmp then
         vim.health.error(
-            string.format("Neovim out of date: '%s'. Upgrade to latest stable or nightlry", verstr)
+            string.format(
+                "Neovim out of date: '%s'. Upgrade to latest stable or nightlry",
+                verstr
+            )
         )
         return
     end
@@ -14,7 +21,10 @@ local check_version = function()
         vim.health.ok(string.format("Neovim version is: '%s'", verstr))
     else
         vim.health.error(
-            string.format("Neovim out of date: '%s'. Upgrade to latest stable or nightly", verstr)
+            string.format(
+                "Neovim out of date: '%s'. Upgrade to latest stable or nightly",
+                verstr
+            )
         )
     end
 end
@@ -36,11 +46,11 @@ end
 
 return {
     check = function()
-        vim.health.start 'kickstart.nvim'
-        vim.health.info [[NOTE: Not every warning is a 'must-fix' in `:checkhealth`
+        vim.health.start('kickstart.nvim')
+        vim.health.info([[NOTE: Not every warning is a 'must-fix' in `:checkhealth`
 		Fix only warnings for plugins and languages you intend to use.
 		Mason will give warnings for languages that are not installed.
-		You do not need to install, unless you want to use those languages!]]
+		You do not need to install, unless you want to use those languages!]])
 
         local uv = vim.uv or vim.loop
         vim.health.info('System Information: ' .. vim.inspect(uv.os_uname()))

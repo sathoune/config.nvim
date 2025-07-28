@@ -14,8 +14,8 @@ local Module = {
         },
     },
     init = function()
-        vim.cmd.colorscheme 'rose-pine-main'
-        vim.cmd.hi 'Comment gui=none'
+        vim.cmd.colorscheme('rose-pine-main')
+        vim.cmd.hi('Comment gui=none')
     end,
 }
 
