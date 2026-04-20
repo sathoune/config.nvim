@@ -8,33 +8,21 @@ Personal Neovim configuration forked from [kickstart.nvim](https://github.com/nv
 
 Entry point: `init.lua`. Everything is reached from there.
 
+**Keep this file up to date.** When you change bootstrap order, the module pattern, keymap prefixes, the test/format workflow, or add/remove a custom command, update the relevant section in the same commit. Don't record individual file names or plugin lists here — they drift too fast.
+
 ## Repository layout
 
 ```
-init.lua                        -- entry point; sets leader, loads modules in order
-lazy-lock.json                  -- lazy.nvim lockfile (auto-managed, commit it)
-Makefile                        -- `make test` runner
-stylua.toml                     -- formatting config (4-space, 88 col, single quotes)
-doc/kickstart.txt               -- upstream vim help
-TODO.md                         -- maintainer scratchpad; not a source of truth
-lua/
-  custom/                       -- personal modules; each exports a register() fn
-    _initialize-lazy.lua        -- bootstraps lazy.nvim
-    options.lua                 -- vim.opt.* settings
-    keymaps.lua                 -- non-plugin mappings + diagnostic nav
-    autocommands.lua            -- yank highlight, Makefile tabs, diagnostic float
-    batch-movement.lua          -- legacy <C-u>/<C-d> thirds-of-screen jumper
-    batch-movement-2.lua        -- newer version with floating top-padding window
-    git-link.lua                -- :GitLink command
-    repo_jump/jump.lua          -- parse GitHub blob URLs
-    repo_jump/jump_spec.lua     -- tests (Busted)
-    instrumentation/read_mappings_spec.lua  -- keymap-reader tests
-  kickstart/health.lua          -- :checkhealth kickstart module
-  plugins/                      -- one lazy.nvim spec per plugin (colorscheme, lsp,
-                                --   telescope, treesitter, completion, dap,
-                                --   neotest, harpoon, oil, trouble, mini, ...)
-.github/workflows/stylua.yml    -- stylua --check on pull_request_target
+init.lua            -- entry point; sets leader, loads modules in order
+lua/custom/         -- personal modules; each exports a register() fn
+lua/custom/*/       -- grouped features (repo_jump, instrumentation, ...)
+lua/plugins/        -- one lazy.nvim spec per plugin
+lua/kickstart/      -- upstream kickstart helpers (:checkhealth, ...)
+doc/                -- vim help files
+.github/workflows/  -- CI (stylua format check)
 ```
+
+Use `Glob`/`ls` to discover current file names — don't rely on a hand-maintained file list here.
 
 ## Bootstrap order (`init.lua`)
 
