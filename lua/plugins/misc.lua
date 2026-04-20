@@ -7,9 +7,14 @@ local Module = {
     },
     'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
     {
-        'folke/neodev.nvim',
+        -- Lua signatures / stdpath library types for lua_ls; replaces neodev.
+        'folke/lazydev.nvim',
+        ft = 'lua',
         opts = {
-            library = { plugins = { 'nvim-dap-ui' }, types = true },
+            library = {
+                { path = '${3rd}/luv/library', words = { 'vim%.uv' } },
+                'nvim-dap-ui',
+            },
         },
     },
     { 'numToStr/Comment.nvim', opts = {} },

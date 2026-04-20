@@ -1,6 +1,9 @@
 local Module = {
     -- Highlight, edit, and navigate code
     'nvim-treesitter/nvim-treesitter',
+    -- Pin to the classic API branch; `main` reworked the setup surface and
+    -- no longer exposes `nvim-treesitter.configs`.
+    branch = 'master',
     build = ':TSUpdate',
     config = function()
         -- [[ Configure Treesitter ]] See `:help nvim-treesitter`

@@ -3,7 +3,10 @@ local Module = {
     version = '0.2.16',
     lazy = not vim.g.started_by_firenvim,
     build = function()
-        vim.fn['firenvim#install'](0)
+        -- Autoload file isn't on rtp in headless/lazy-build context, which
+        -- raises E117. The install side effect is browser-only anyway, so
+        -- swallow the error when the function isn't loadable.
+        pcall(vim.fn['firenvim#install'], 0)
     end,
     config = function()
         vim.g.firenvim_config = {
