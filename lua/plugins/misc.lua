@@ -1,38 +1,48 @@
-local Module = {
-    { -- Add indentation guides even on blank lines
-        'lukas-reineke/indent-blankline.nvim',
-        -- See `:help ibl`
-        main = 'ibl',
-        opts = {},
-    },
-    'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
+return {
     {
-        'folke/neodev.nvim',
-        opts = {
-            library = { plugins = { 'nvim-dap-ui' }, types = true },
-        },
+        src = 'https://github.com/lukas-reineke/indent-blankline.nvim',
+        setup = function()
+            require('ibl').setup({})
+        end,
     },
-    { 'numToStr/Comment.nvim', opts = {} },
-    { -- Adds git related signs to the gutter, as well as utilities for managing changes
-        'lewis6991/gitsigns.nvim',
-        opts = {
-            signs = {
-                add = { text = '+' },
-                change = { text = '~' },
-                delete = { text = '_' },
-                topdelete = { text = '‾' },
-                changedelete = { text = '~' },
-            },
-        },
+    { src = 'https://github.com/tpope/vim-sleuth' },
+    {
+        src = 'https://github.com/folke/lazydev.nvim',
+        setup = function()
+            require('lazydev').setup({
+                library = {
+                    { path = '${3rd}/luv/library', words = { 'vim%.uv' } },
+                    'nvim-dap-ui',
+                },
+            })
+        end,
     },
-    { -- Useful plugin to show you pending keybinds.
-        'folke/which-key.nvim',
-        event = 'VimEnter', -- Sets the loading event to 'VimEnter'
-        config = function() -- This is the function that runs, AFTER loading
-            require('which-key').setup()
-
-            -- These just suggest what might be under the key-chain
-            require('which-key').add({
+    {
+        src = 'https://github.com/numToStr/Comment.nvim',
+        setup = function()
+            require('Comment').setup({})
+        end,
+    },
+    {
+        src = 'https://github.com/lewis6991/gitsigns.nvim',
+        setup = function()
+            require('gitsigns').setup({
+                signs = {
+                    add = { text = '+' },
+                    change = { text = '~' },
+                    delete = { text = '_' },
+                    topdelete = { text = '‾' },
+                    changedelete = { text = '~' },
+                },
+            })
+        end,
+    },
+    {
+        src = 'https://github.com/folke/which-key.nvim',
+        setup = function()
+            local which_key = require('which-key')
+            which_key.setup()
+            which_key.add({
                 { '<leader>c', group = '[C]ode' },
                 { '<leader>c_', hidden = true },
                 { '<leader>d', group = '[D]ocument' },
@@ -48,19 +58,16 @@ local Module = {
             })
         end,
     },
-    { -- Highlight todo, notes, etc in comments
-        'folke/todo-comments.nvim',
-        event = 'VimEnter',
-        dependencies = { 'nvim-lua/plenary.nvim' },
-        opts = { signs = false },
+    {
+        src = 'https://github.com/folke/todo-comments.nvim',
+        setup = function()
+            require('todo-comments').setup({ signs = false })
+        end,
     },
     {
-        'windwp/nvim-autopairs',
-        event = 'InsertEnter',
-        config = true,
-        -- use opts = {} for passing setup options
-        -- this is equivalent to setup({}) function
+        src = 'https://github.com/windwp/nvim-autopairs',
+        setup = function()
+            require('nvim-autopairs').setup({})
+        end,
     },
 }
-
-return Module

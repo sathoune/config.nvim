@@ -1,8 +1,6 @@
-local Module = {
-    'HiPhish/rainbow-delimiters.nvim',
-    dependencies = { 'nvim-treesitter/nvim-treesitter' },
-    config = function()
-        -- This module contains a number of default definitions
+return {
+    src = 'https://github.com/HiPhish/rainbow-delimiters.nvim',
+    setup = function()
         local rainbow_delimiters = require('rainbow-delimiters')
 
         require('rainbow-delimiters.setup').setup({
@@ -30,5 +28,3 @@ local Module = {
         })
     end,
 }
-
-return Module

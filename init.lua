@@ -17,7 +17,7 @@ require('custom.options')()
 require('custom.keymaps')()
 require('custom.autocommands')()
 
-require('custom._initialize-lazy')()
+require('custom.plugins')()
 require('custom.git-link')()
 
 -- The line beneath this is called `modeline`. See `:help modeline`

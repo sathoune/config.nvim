@@ -1,11 +1,12 @@
-local Module = {
-    'glacambre/firenvim',
-    version = '0.2.16',
-    lazy = not vim.g.started_by_firenvim,
+return {
+    src = 'https://github.com/glacambre/firenvim',
+    version = 'v0.2.16',
     build = function()
-        vim.fn['firenvim#install'](0)
+        -- Autoload isn't on rtp in headless/build context; pcall silences
+        -- E117. The install side effect is browser-only anyway.
+        pcall(vim.fn['firenvim#install'], 0)
     end,
-    config = function()
+    setup = function()
         vim.g.firenvim_config = {
             globalSettings = { alt = 'all' },
             localSettings = {
@@ -36,5 +37,3 @@ local Module = {
         end
     end,
 }
-
-return Module

@@ -1,10 +1,14 @@
-local Module = {
-    -- Highlight, edit, and navigate code
-    'nvim-treesitter/nvim-treesitter',
-    build = ':TSUpdate',
-    config = function()
-        -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
-
+return {
+    -- Pin to the classic API branch; `main` reworked the setup surface and
+    -- no longer exposes `nvim-treesitter.configs`.
+    src = 'https://github.com/nvim-treesitter/nvim-treesitter',
+    version = 'master',
+    build = function(ev)
+        -- `:TSUpdate` is defined by the plugin itself, so it exists by the
+        -- time PackChanged fires.
+        pcall(vim.cmd, 'TSUpdate')
+    end,
+    setup = function()
         ---@diagnostic disable-next-line: missing-fields
         require('nvim-treesitter.configs').setup({
             ensure_installed = {
@@ -17,19 +21,9 @@ local Module = {
                 'vimdoc',
                 'python',
             },
-            -- Autoinstall languages that are not installed
             auto_install = true,
             highlight = { enable = true },
             indent = { enable = true },
         })
-
-        -- There are additional nvim-treesitter modules that you can use to interact
-        -- with nvim-treesitter. You should go explore a few and see what interests you:
-        --
-        --    - Incremental selection: Included, see `:help nvim-treesitter-incremental-selection-mod`
-        --    - Show your current context: https://github.com/nvim-treesitter/nvim-treesitter-context
-        --    - Treesitter + textobjects: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
     end,
 }
-
-return Module
