@@ -24,10 +24,7 @@ end
 
 local function setup_lsp_attach_keymaps()
     vim.api.nvim_create_autocmd('LspAttach', {
-        group = vim.api.nvim_create_augroup(
-            'kickstart-lsp-attach',
-            { clear = true }
-        ),
+        group = vim.api.nvim_create_augroup('kickstart-lsp-attach', { clear = true }),
         callback = function(event)
             local map = function(keys, func, desc)
                 vim.keymap.set(
@@ -89,56 +86,56 @@ local function setup_lsp_attach_keymaps()
     })
 end
 
-local Module = {
-    -- nvim-lspconfig ships default server configs (cmd, root_markers,
-    -- filetypes) via after/lsp/*.lua, which Neovim 0.11+ auto-loads.
-    -- vim.lsp.config() overlays our overrides on top.
-    'neovim/nvim-lspconfig',
-    dependencies = {
-        -- Install language servers and tools to stdpath.
-        'williamboman/mason.nvim',
-        'WhoIsSethDaniel/mason-tool-installer.nvim',
-
-        -- LSP progress UI.
-        { 'j-hui/fidget.nvim', opts = {} },
+return {
+    { src = 'https://github.com/williamboman/mason.nvim' },
+    { src = 'https://github.com/WhoIsSethDaniel/mason-tool-installer.nvim' },
+    {
+        src = 'https://github.com/j-hui/fidget.nvim',
+        setup = function()
+            require('fidget').setup({})
+        end,
     },
-    config = function()
-        setup_lsp_attach_keymaps()
-        install_tools()
+    {
+        -- nvim-lspconfig ships default server configs (cmd, root_markers,
+        -- filetypes) via after/lsp/*.lua, which Neovim 0.11+ auto-loads.
+        -- vim.lsp.config() overlays our overrides on top.
+        src = 'https://github.com/neovim/nvim-lspconfig',
+        setup = function()
+            setup_lsp_attach_keymaps()
+            install_tools()
 
-        -- Broadcast nvim-cmp's extra capabilities (snippet support, etc.)
-        -- to every server via the '*' default config.
-        local capabilities = vim.tbl_deep_extend(
-            'force',
-            vim.lsp.protocol.make_client_capabilities(),
-            require('cmp_nvim_lsp').default_capabilities()
-        )
-        vim.lsp.config('*', { capabilities = capabilities })
+            -- Broadcast nvim-cmp's extra capabilities (snippet support, etc.)
+            -- to every server via the '*' default config.
+            local capabilities = vim.tbl_deep_extend(
+                'force',
+                vim.lsp.protocol.make_client_capabilities(),
+                require('cmp_nvim_lsp').default_capabilities()
+            )
+            vim.lsp.config('*', { capabilities = capabilities })
 
-        vim.lsp.config('lua_ls', {
-            settings = {
-                Lua = {
-                    diagnostics = {
-                        globals = {
-                            -- vim globals
-                            'vim',
-                            -- Busted globals
-                            'describe',
-                            'it',
-                            'before_each',
-                            'after_each',
-                            'assert',
+            vim.lsp.config('lua_ls', {
+                settings = {
+                    Lua = {
+                        diagnostics = {
+                            globals = {
+                                -- vim globals
+                                'vim',
+                                -- Busted globals
+                                'describe',
+                                'it',
+                                'before_each',
+                                'after_each',
+                                'assert',
+                            },
                         },
+                        runtime = { version = 'LuaJIT' },
+                        completion = { callSnippet = 'Replace' },
+                        -- Neovim stdpath libraries come from lazydev.nvim.
                     },
-                    runtime = { version = 'LuaJIT' },
-                    completion = { callSnippet = 'Replace' },
-                    -- Neovim stdpath libraries come from lazydev.nvim.
                 },
-            },
-        })
+            })
 
-        vim.lsp.enable(lsp_servers)
-    end,
+            vim.lsp.enable(lsp_servers)
+        end,
+    },
 }
-
-return Module

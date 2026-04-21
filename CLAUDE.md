@@ -4,7 +4,7 @@ Guidance for Claude Code (and other AI assistants) working in this repo.
 
 ## Overview
 
-Personal Neovim configuration forked from [kickstart.nvim](https://github.com/nvim-lua/kickstart.nvim), written in Lua. Plugins are managed by [lazy.nvim](https://github.com/folke/lazy.nvim). All personal code lives under `lua/custom/`; plugin specs live one-file-per-plugin under `lua/plugins/`.
+Personal Neovim configuration forked from [kickstart.nvim](https://github.com/nvim-lua/kickstart.nvim), written in Lua. Requires Neovim **0.12+** (uses `vim.pack`, `vim.lsp.config`, `vim.lsp.enable`). Plugins are managed by the built-in `vim.pack` package manager via a thin loader at `lua/custom/plugins.lua`; binary tools (LSP servers, formatters, linters, debug adapters) are installed through mason. All personal code lives under `lua/custom/`; plugin specs live one-file-per-plugin under `lua/plugins/`.
 
 Entry point: `init.lua`. Everything is reached from there.
 
@@ -16,7 +16,7 @@ Entry point: `init.lua`. Everything is reached from there.
 init.lua            -- entry point; sets leader, loads modules in order
 lua/custom/         -- personal modules; each exports a register() fn
 lua/custom/*/       -- grouped features (repo_jump, instrumentation, ...)
-lua/plugins/        -- one lazy.nvim spec per plugin
+lua/plugins/        -- one vim.pack spec per plugin
 lua/kickstart/      -- upstream kickstart helpers (:checkhealth, ...)
 doc/                -- vim help files
 .github/workflows/  -- CI (stylua format check)
@@ -33,7 +33,7 @@ Leader keys **must** be set before plugins load. The required order is:
 3. `custom.options`
 4. `custom.keymaps`
 5. `custom.autocommands`
-6. `custom._initialize-lazy` — clones lazy.nvim if needed, calls `lazy.setup` which picks up `lua/plugins/*.lua`
+6. `custom.plugins` — discovers every `lua/plugins/*.lua`, flattens/dedupes, registers a `PackChanged` autocmd for build hooks, calls `vim.pack.add(...)` once, then runs every spec's `setup()`
 7. `custom.git-link`
 
 If you add a new custom module that produces side effects, wire it in here.
@@ -54,11 +54,23 @@ Do not execute side effects at module top level. Keep them inside `register`.
 
 ## Plugin spec conventions (`lua/plugins/`)
 
-- One file per plugin, returning a lazy.nvim spec table (or a list of specs).
-- Prefer lazy-loading triggers: `event`, `cmd`, `keys`, `ft`.
-- Every entry in `keys = { ... }` must include a `desc` so which-key renders it.
-- Use `opts = { ... }` when setup is a straight pass-through; use `config = function() ... end` when setup needs logic (registering keymaps after `require`, etc.).
-- LSP servers, formatters, linters, and debuggers are installed via mason — add new ones in `lua/plugins/lsp.lua` (`ensure_installed`) rather than expecting the user to install them manually.
+Each file returns either a single spec table or a list of them. The loader in `lua/custom/plugins.lua` understands this shape:
+
+```lua
+{
+  src     = 'https://github.com/user/repo',  -- required
+  name    = 'optional-override',             -- defaults to repo basename
+  version = 'branch|tag|sha',                -- or vim.version.range(...)
+  setup   = function() ... end,              -- runs after vim.pack.add returns
+  build   = function(ev) ... end,            -- fires on PackChanged install/update
+}
+```
+
+- One file per plugin (or per tightly coupled bundle — e.g. dap, telescope, completion).
+- Put post-install work in `build(ev)` — `ev.path` points at the plugin checkout. Build hooks dispatch through the `PackChanged` autocmd registered by the loader.
+- Every keymap must include a `desc` field so which-key renders it. Register keymaps inside `setup` (not at module top level — see [What not to do](#what-not-to-do)).
+- LSP servers, formatters, linters, and debuggers are installed via mason — add new ones to `ensure_installed` in `lua/plugins/lsp.lua` rather than expecting the user to install them manually.
+- Pin churn-prone plugins with `version` (e.g. `nvim-treesitter` is pinned to `master` because the `main` branch dropped the classic `nvim-treesitter.configs` API).
 
 ## Keymap conventions
 
@@ -84,11 +96,11 @@ Other standing mappings:
 
 ## Testing
 
-- Framework: plenary.nvim's `PlenaryBustedDirectory` (Busted-compatible syntax).
+- Framework: plenary.nvim's `PlenaryBustedFile` (Busted-compatible syntax).
 - File naming: `*_spec.lua`, colocated with the module under test (e.g. `repo_jump/jump.lua` + `repo_jump/jump_spec.lua`).
 - Run all: `make test`
 - Run a subset: `make test TEST_FILE=lua/custom/repo_jump/`
-- Under the hood: `nvim --headless -c "PlenaryBustedDirectory $(TEST_FILE)"`
+- Under the hood: the `Makefile` finds every `*_spec.lua` under `TEST_FILE` and runs each in its own headless nvim invocation. `PlenaryBustedDirectory` crashes on Neovim 0.12 (plenary's multi-file `on_exit` handler calls `unpack` on large job results); per-file invocation keeps plenary on the single-path code path that streams output line-by-line.
 - Globals (`describe`, `it`, `before_each`, `after_each`, `assert`) are already registered in `lua/plugins/lsp.lua` for `lua_ls`, so specs don't need extra LSP setup.
 
 ## Formatting
@@ -99,9 +111,9 @@ Other standing mappings:
 
 ## Adding a plugin — quick recipe
 
-1. Create `lua/plugins/<name>.lua` returning a lazy spec.
-2. Restart Neovim (or `:Lazy sync`); lazy.nvim updates `lazy-lock.json` — **commit the lockfile**.
-3. Run stylua (save the file with conform on, or `stylua lua/plugins/<name>.lua`) before pushing.
+1. Create `lua/plugins/<name>.lua` returning a `{ src = 'https://github.com/...', setup = function() ... end }` spec (see [Plugin spec conventions](#plugin-spec-conventions-luaplugins)).
+2. Restart Neovim. `vim.pack` clones the repo, runs any `build` hook, and writes `nvim-pack-lock.json` at the config root — **commit the lockfile**. Use `:h vim.pack` for the underlying API; `vim.pack.update()` refreshes pinned versions.
+3. Run stylua (save with conform, or `stylua lua/plugins/<name>.lua`) before pushing.
 4. If the plugin provides an LSP server/tool, add it to `ensure_installed` in `lua/plugins/lsp.lua` instead of documenting a manual install.
 
 ## Custom commands & features worth knowing
@@ -114,9 +126,10 @@ Other standing mappings:
 
 ## What not to do
 
-- Don't run side effects at module top level. Wrap them in a `register()` function.
-- Don't hand-edit `lazy-lock.json`; let lazy.nvim regenerate it.
+- Don't run side effects at module top level. Wrap them in a `register()` function (for `lua/custom/`) or `setup` (for `lua/plugins/`).
+- Don't hand-edit `nvim-pack-lock.json`; let `vim.pack` regenerate it.
 - Don't introduce tab indentation in Lua files — stylua enforces spaces.
 - Don't add keymaps without a `desc` field (breaks which-key hints).
 - Don't skip stylua — the `stylua.yml` workflow will fail the PR.
 - Don't bypass the bootstrap order in `init.lua` (leader must precede plugin setup).
+- Don't reintroduce `lazy.nvim`, `mason-lspconfig`, or `neodev` — all three were removed (replaced by `vim.pack`, native `vim.lsp.config` / `vim.lsp.enable`, and `lazydev.nvim` respectively). Check `:h vim.pack` and `:h vim.lsp.enable` before proposing alternatives.

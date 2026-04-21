@@ -1,20 +1,21 @@
-local Module = {
-    'stevearc/oil.nvim',
-    dependencies = { 'nvim-tree/nvim-web-devicons' },
-    lazy = false,
-    keys = {
-        { '-', '<CMD>Oil<CR>', { desc = 'Open parent directory ' } },
+return {
+    {
+        src = 'https://github.com/nvim-tree/nvim-web-devicons',
     },
-    opts = {
-        column = { 'icon' },
-        keymaps = {
-            ['<C-h>'] = false,
-            ['<M-h>'] = 'actions.select_split',
-        },
-        view_options = {
-            show_hidden = true,
-        },
+    {
+        src = 'https://github.com/stevearc/oil.nvim',
+        setup = function()
+            require('oil').setup({
+                column = { 'icon' },
+                keymaps = {
+                    ['<C-h>'] = false,
+                    ['<M-h>'] = 'actions.select_split',
+                },
+                view_options = {
+                    show_hidden = true,
+                },
+            })
+            vim.keymap.set('n', '-', '<cmd>Oil<cr>', { desc = 'Open parent directory' })
+        end,
     },
 }
-
-return Module

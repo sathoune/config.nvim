@@ -1,14 +1,12 @@
-local Module = {
-    'glacambre/firenvim',
-    version = '0.2.16',
-    lazy = not vim.g.started_by_firenvim,
+return {
+    src = 'https://github.com/glacambre/firenvim',
+    version = 'v0.2.16',
     build = function()
-        -- Autoload file isn't on rtp in headless/lazy-build context, which
-        -- raises E117. The install side effect is browser-only anyway, so
-        -- swallow the error when the function isn't loadable.
+        -- Autoload isn't on rtp in headless/build context; pcall silences
+        -- E117. The install side effect is browser-only anyway.
         pcall(vim.fn['firenvim#install'], 0)
     end,
-    config = function()
+    setup = function()
         vim.g.firenvim_config = {
             globalSettings = { alt = 'all' },
             localSettings = {
@@ -39,5 +37,3 @@ local Module = {
         end
     end,
 }
-
-return Module

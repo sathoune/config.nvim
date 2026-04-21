@@ -1,17 +1,6 @@
-local Module = {
-    'apple/pkl-neovim',
-    lazy = true,
-    event = {
-        'BufReadPre *.pkl',
-        'BufReadPre *.pcf',
-        'BufReadPre PklProject',
-    },
-    dependencies = {
-        'nvim-treesitter/nvim-treesitter',
-    },
+return {
+    src = 'https://github.com/apple/pkl-neovim',
     build = function()
-        vim.cmd('TSInstall! pkl')
+        pcall(vim.cmd, 'TSInstall! pkl')
     end,
 }
-
-return Module

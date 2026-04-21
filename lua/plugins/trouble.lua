@@ -1,39 +1,32 @@
-local Module = {
-    'folke/trouble.nvim',
-    opts = {}, -- for default options, refer to the configuration section for custom setup.
-    cmd = 'Trouble',
-    keys = {
-        {
+return {
+    src = 'https://github.com/folke/trouble.nvim',
+    setup = function()
+        require('trouble').setup({})
+
+        local map = function(lhs, rhs, desc)
+            vim.keymap.set('n', lhs, rhs, { desc = desc })
+        end
+        map(
             '<leader>xx',
             '<cmd>Trouble diagnostics toggle<cr>',
-            desc = 'Diagnostics (Trouble)',
-        },
-        {
+            'Diagnostics (Trouble)'
+        )
+        map(
             '<leader>xX',
             '<cmd>Trouble diagnostics toggle filter.buf=0<cr>',
-            desc = 'Buffer Diagnostics (Trouble)',
-        },
-        {
+            'Buffer Diagnostics (Trouble)'
+        )
+        map(
             '<leader>cs',
             '<cmd>Trouble symbols toggle focus=false<cr>',
-            desc = 'Symbols (Trouble)',
-        },
-        {
+            'Symbols (Trouble)'
+        )
+        map(
             '<leader>cl',
             '<cmd>Trouble lsp toggle focus=false win.position=right<cr>',
-            desc = 'LSP Definitions / references / ... (Trouble)',
-        },
-        {
-            '<leader>xL',
-            '<cmd>Trouble loclist toggle<cr>',
-            desc = 'Location List (Trouble)',
-        },
-        {
-            '<leader>xQ',
-            '<cmd>Trouble qflist toggle<cr>',
-            desc = 'Quickfix List (Trouble)',
-        },
-    },
+            'LSP Definitions / references / ... (Trouble)'
+        )
+        map('<leader>xL', '<cmd>Trouble loclist toggle<cr>', 'Location List (Trouble)')
+        map('<leader>xQ', '<cmd>Trouble qflist toggle<cr>', 'Quickfix List (Trouble)')
+    end,
 }
-
-return Module
