@@ -9,6 +9,7 @@ local Module = {
             strategy = {
                 [''] = rainbow_delimiters.strategy['global'],
                 vim = rainbow_delimiters.strategy['local'],
+                oil = false,
             },
             query = {
                 [''] = 'rainbow-delimiters',
